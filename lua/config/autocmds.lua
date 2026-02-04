@@ -13,3 +13,24 @@ vim.api.nvim_create_autocmd({ "InsertLeave", "TextChanged" }, {
   command = "silent! wall",
   nested = true,
 })
+
+vim.api.nvim_create_autocmd("BufReadPost", {
+  group = vim.api.nvim_create_augroup("AutoTerminal", { clear = true }),
+  callback = function()
+    vim.schedule(function()
+      local terminal_exists = false
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].buftype == "terminal" then
+          terminal_exists = true
+          break
+        end
+      end
+
+      if not terminal_exists then
+        vim.cmd("belowright split | terminal")
+        vim.cmd("wincmd k")
+      end
+    end)
+  end,
+})
