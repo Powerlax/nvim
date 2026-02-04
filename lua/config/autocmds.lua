@@ -28,7 +28,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
       end
 
       if not terminal_exists then
-        vim.cmd("belowright split | terminal")
+        vim.cmd("belowright 15split | terminal")
         vim.cmd("wincmd k")
       end
     end)
